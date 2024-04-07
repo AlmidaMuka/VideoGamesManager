@@ -70,14 +70,22 @@ namespace VideoGamesManager.Controllers
 
                 videogameService.UpdateVideoGame(existingVideoGame);
 
-                return new  OkObjectResult("Video game updated successfully");
+                return new OkObjectResult("Video game updated successfully");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred while updating the video game: {ex.Message}");
             }
         }
-    }
-   
-}
 
+        [HttpGet("filterVideogames")]
+
+        public List<VideoGame> FilterVideoGame([FromQuery] string? name, [FromQuery] int? size, [FromQuery] string? studio)
+        {
+            var videogameService = new VideoGameService();
+            var videogamefilter = videogameService.FilterVideoGame(name,size,studio);
+            return videogamefilter;
+        }
+    }
+
+}

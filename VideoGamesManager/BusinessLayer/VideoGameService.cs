@@ -43,5 +43,37 @@ namespace VideoGamesManager.BusinessLayer
             var gamesRepository = new VideoGameRepository();
             gamesRepository.UpdateVideoGame(videoGame);
         }
+
+        public VideoGame FilterVideoGame(int id,string name, int size, string studio)
+        {
+            var gamesRepository = new VideoGameRepository();
+            var videogame = gamesRepository.GetAllVideoGame();
+            var videogameid = gamesRepository.GetAllVideoGame()
+                                        .Where(p => p.ID == id)
+                                         .FirstOrDefault();
+            return videogameid;
+
+        }
+
+        public List<VideoGame> FilterVideoGame([FromQuery] string? name, [FromQuery] int? size, [FromQuery] string? studio)
+        {
+            var gamesRepository = new VideoGameRepository();
+            var videogame = gamesRepository.GetAllVideoGame();
+            if (!string.IsNullOrEmpty(name))
+            {
+                videogame = videogame.Where(p => p.Name.Contains(name))
+                   .ToList();
+            }
+            if (size != 0 && size != null)
+            {
+                videogame = videogame.Where(p => p.Size == size).ToList();
+            }
+            if (!string.IsNullOrEmpty(studio))
+            {
+                videogame = videogame.Where(p => p.Studio.Contains(studio))
+                   .ToList();
+            }
+            return videogame;
+        }
     }
 }
